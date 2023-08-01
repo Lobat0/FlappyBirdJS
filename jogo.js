@@ -9,23 +9,27 @@ const contexto = canvas.getContext('2d');
 
 
 
-const flappyBird = {
+const flappyBird = { //representa o passarinho
   spriteX: 0,
   spriteY: 0,
   largura: 33,
   altura: 24,
   x: 10,
   y: 50,
+  desenha(){
+    contexto.drawImage(
+      sprites,
+      flappyBird.spriteX,flappyBird.spriteY, //Spritex, Sprite Y
+      flappyBird.largura, flappyBird.altura, //Tamanho do recorte na sprite
+      flappyBird.x, flappyBird.y,
+      flappyBird.largura, flappyBird.altura,
+    )
+  }
 }
 
 function loop(){
-  contexto.drawImage(
-    sprites,
-    0,0,
-    33, 24,
-    10,50,
-    33,24,
-  )
+
+  flappyBird.desenha()
 
   requestAnimationFrame(loop)
 
