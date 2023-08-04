@@ -119,9 +119,12 @@ function criaFlappyBird(){
       if(fazColisao(flappyBird, globais.chao)){
         console.log('fez colisao')
         som_HIT.play()
-        setTimeout(() => {
+
+        /*setTimeout(() => {
           mudaParaTela(Telas.INICIO)
-        }, 500)
+        }, 500)*/
+
+        mudaParaTela(Telas.GAME_OVER)
         
         return
       }
@@ -180,6 +183,26 @@ const mensagemGetReady = {
       mensagemGetReady.w, mensagemGetReady.h, 
       mensagemGetReady.x, mensagemGetReady.y,
       mensagemGetReady.w, mensagemGetReady.h
+    );
+  }
+}
+
+//Mensagem de Game Over
+
+const mensagemGameOver = {
+  sX: 134,
+  sY: 153,
+  w: 226,
+  h: 200,
+  x: (canvas.width / 2) - 226 / 2,
+  y: 50,
+  desenha() {
+    contexto.drawImage(
+      sprites,
+      mensagemGameOver.sX, mensagemGameOver.sY,
+      mensagemGameOver.w, mensagemGameOver.h, 
+      mensagemGameOver.x, mensagemGameOver.y,
+      mensagemGameOver.w, mensagemGameOver.h
     );
   }
 }
@@ -245,10 +268,10 @@ function criaCanos() {
 
     temColisaoComOFlappyBird(par){
 
-      if(globais.flappyBird.x >= par.x){
+      const cabecaDoFlappy = globais.flappyBird.y
+      const peDoFlappy = globais.flappyBird.y + globais.flappyBird.altura
 
-        const cabecaDoFlappy = globais.flappyBird.y
-        const peDoFlappy = globais.flappyBird.y + globais.flappyBird.altura
+      if((globais.flappyBird.x + globais.flappyBird.largura - 5) >= par.x){
         
         if(cabecaDoFlappy <= par.canoCeu.y) {
           return true
@@ -280,7 +303,8 @@ function criaCanos() {
 
         if (canos.temColisaoComOFlappyBird(par)){
           console.log('voce perdeu')
-          mudaParaTela(Telas.INICIO)
+          som_HIT.play()
+          mudaParaTela(Telas.GAME_OVER)          
         }
 
         if(par.x + canos.largura <= 0){
@@ -293,6 +317,30 @@ function criaCanos() {
   return canos;
 }
 
+
+//Placar
+function criaPlacar() {
+  const placar = {
+    pontuacao: 0,
+    desenha() {
+      contexto.font = '35px "VT323"'
+      contexto.textAlign = 'right'
+      contexto.fillStyle = 'white'
+      contexto.fillText(`${placar.pontuacao}`, canvas.width - 10, 35)
+      //placar.pontuacao
+    },
+    atualiza(){
+      const intervaloDeFrames = 30
+      const passouOIntervalo = frames % intervaloDeFrames === 0
+      
+      if (passouOIntervalo){
+        placar.pontuacao = placar.pontuacao + 1
+      }
+      
+    },
+  }
+  return placar
+}
 
 
 //Telas
@@ -338,11 +386,17 @@ const Telas = {
 };
 
 Telas.JOGO = {
+
+  inicializa() {
+    globais.placar = criaPlacar()
+  },
+
   desenha() {
     planoDeFundo.desenha();
     globais.canos.desenha() //desenha o cano na tela
     globais.chao.desenha();
     globais.flappyBird.desenha();
+    globais.placar.desenha()
   },
   click() {
     globais.flappyBird.pula()
@@ -351,7 +405,20 @@ Telas.JOGO = {
     globais.canos.atualiza()
     globais.flappyBird.atualiza();
     globais.chao.atualiza()
+    globais.placar.atualiza()
   },
+}
+
+Telas.GAME_OVER = {
+  desenha() {
+    mensagemGameOver.desenha()
+  },
+  atualiza(){
+
+  },
+  click(){
+    mudaParaTela(Telas.INICIO)
+  }
 }
 
 
