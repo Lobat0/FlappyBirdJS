@@ -103,7 +103,7 @@ function criaFlappyBird(){
   const flappyBird = {
     spriteX: 0,
     spriteY: 0,
-    largura: 33,
+    largura: 34,
     altura: 24,
     x: 10,
     y: 50,
@@ -186,6 +186,63 @@ const mensagemGetReady = {
     );
   }
 }
+
+//Medalhas
+
+function medalhas() {
+  const medalha = {
+    sX: 0,
+    sY: 78,
+    w: 44,
+    h: 44,
+    x: (canvas.width / 2) - 173 / 2,
+    y: 137,//pos
+
+    posicaoMedalhas: [
+      {sX: 0, sY: 78,},
+      {sX: 48, sY: 78,},
+      {sX: 0, sY: 124,},
+      {sX: 48, sY: 124,},
+    ],
+    ponto : globais.placar.pontuacao,
+    atualizaPontos() {
+      ponto = globais.placar.pontuacao
+      posiMedalha = 0
+      if(ponto < 3){
+        posiMedalha = 0
+      }else if(ponto < 6 && ponto >= 3){
+        posiMedalha = 1
+      }else if(ponto < 9 && ponto >= 6){
+        posiMedalha = 2
+      }else{
+        posiMedalha = 3
+      }
+      
+    },
+    
+
+    desenha(){
+      
+      
+      this.atualizaPontos()
+      const {sX, sY} = this.posicaoMedalhas[posiMedalha]
+      //const sX = this.posicaoMedalhas[2]
+      //const sY = this.posicaoMedalhas[2]
+      contexto.drawImage(
+        sprites,
+        sX, sY,
+        medalha.w, medalha.h, 
+        medalha.x, medalha.y,
+        medalha.w, medalha.h
+      );
+    }
+  }
+  return medalha;
+}
+
+
+
+
 
 //Mensagem de Game Over
 
@@ -323,10 +380,10 @@ function criaPlacar() {
   const placar = {
     pontuacao: 0,
     desenha() {
-      contexto.font = '35px "VT323"'
+      contexto.font = '30px "Press Start 2P"'
       contexto.textAlign = 'right'
       contexto.fillStyle = 'white'
-      contexto.fillText(`${placar.pontuacao}`, canvas.width - 10, 35)
+      contexto.fillText(`${placar.pontuacao}`, canvas.width - 10, 40)
       //placar.pontuacao
     },
     atualiza(){
@@ -410,8 +467,14 @@ Telas.JOGO = {
 }
 
 Telas.GAME_OVER = {
+  
   desenha() {
+
+
+    globais.medalha = medalhas()
     mensagemGameOver.desenha()
+    globais.medalha.desenha()
+    
   },
   atualiza(){
 
