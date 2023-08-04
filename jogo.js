@@ -395,6 +395,19 @@ function criaPlacar() {
       }
       
     },
+
+    final(){
+      contexto.font = '15px "Press Start 2P"'
+      contexto.textAlign = 'right'
+      contexto.fillStyle = '#FAAA09'
+      //score
+      contexto.fillText(`${placar.pontuacao}`, canvas.width - 68, 146)
+      //best
+      contexto.fillText(`${placar.pontuacao}`, canvas.width - 68, 186)
+
+      
+      
+    },
   }
   return placar
 }
@@ -474,6 +487,7 @@ Telas.GAME_OVER = {
     globais.medalha = medalhas()
     mensagemGameOver.desenha()
     globais.medalha.desenha()
+    globais.placar.final()
     
   },
   atualiza(){
