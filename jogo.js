@@ -5,6 +5,9 @@ let frames = 0
 const som_HIT = new Audio();
 som_HIT.src = './efeitos/hit.wav'
 
+const som_PULO = new Audio();
+som_PULO.src = './efeitos/pulo.wav'
+
 const sprites = new Image();
 sprites.src = './sprites.png';
 
@@ -111,6 +114,7 @@ function criaFlappyBird(){
     pula() {
       
       flappyBird.velocidade = - flappyBird.pulo 
+      som_PULO.play();
     },
     gavidade: 0.25,
     velocidade: 0,
@@ -285,7 +289,7 @@ function criaCanos() {
       canos.pares.forEach(function(par) {
 
         const yRandom = par.y
-        const espacamentoEntreCanos = 90
+        const espacamentoEntreCanos = 92
 
         //Cano do ceu
         const canoCeuX = par.x;
